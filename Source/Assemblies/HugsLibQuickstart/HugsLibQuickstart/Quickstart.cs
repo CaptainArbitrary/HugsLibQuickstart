@@ -50,7 +50,7 @@ public class Quickstart : Mod
 
     private string GetSaveNameToLoad()
     {
-        return Settings.SaveFileToLoad ?? TryGetMostRecentSaveFileName();
+        return !Settings.SaveFileToLoad.NullOrEmpty() ? Settings.SaveFileToLoad : TryGetMostRecentSaveFileName();
     }
 
     private string TryGetMostRecentSaveFileName()
@@ -93,10 +93,9 @@ public class Quickstart : Mod
 
         CheckForErrorsAndWarnings();
 
-        if (Settings.OperationMode == QuickstartSettings.QuickstartMode.GenerateMap) InitiateMapGeneration();
-        // } else if (Settings.OperationMode == QuickstartSettings.QuickstartMode.LoadMap)
-        // {
-        // InitiateSaveLoading();
+        if (Settings.OperationMode == QuickstartSettings.QuickstartMode.GenerateMap)
+            InitiateMapGeneration();
+        else if (Settings.OperationMode == QuickstartSettings.QuickstartMode.LoadMap) InitiateSaveLoading();
     }
 
     private void CheckForErrorsAndWarnings()
@@ -140,5 +139,23 @@ public class Quickstart : Mod
         Find.Scenario.PostIdeoChosen();
         Find.GameInitData.PrepForMapGen();
         Find.Scenario.PreMapGenerate();
+    }
+
+    private void InitiateSaveLoading()
+    {
+        string saveName = GetSaveNameToLoad() ?? throw new WarningException("save filename not set");
+        string filePath = GenFilePaths.FilePathForSavedGame(saveName);
+        if (!File.Exists(filePath)) throw new WarningException("save file not found: " + saveName);
+        Log.Message("Quickstarter is loading saved game: " + saveName);
+
+        void LoadAction()
+        {
+            GameDataSaveLoader.LoadGame(saveName);
+        }
+
+        if (Settings.BypassSafetyDialog)
+            LoadAction();
+        else
+            PreLoadUtility.CheckVersionAndLoad(filePath, ScribeMetaHeaderUtility.ScribeHeaderMode.Map, LoadAction);
     }
 }
