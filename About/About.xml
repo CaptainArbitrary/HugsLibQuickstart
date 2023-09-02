@@ -1,10 +1,10 @@
 <ModMetaData>
-  <packageId/>
-  <name/>
+  <packageId>CaptainArbitrary.HugsLibQuickstart</packageId>
+  <name>HugsLib Quickstart</name>
   <author>CaptainArbitrary</author>
   <description/>
   <modVersion/>
-  <url/>
+  <url>https://github.com/CaptainArbitrary/HugsLibQuickstart</url>
   <supportedVersions>
     <li>1.4</li>
   </supportedVersions>
