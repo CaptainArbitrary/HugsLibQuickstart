@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MOD_NAME="RimWorldMod"
+MOD_NAME="HugsLibQuickstart"
 
 # Repository variables
 
