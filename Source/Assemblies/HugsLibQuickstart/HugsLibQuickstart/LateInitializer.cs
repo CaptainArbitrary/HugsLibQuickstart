@@ -7,6 +7,7 @@ public class LateInitializer
 {
     static LateInitializer()
     {
+        if (ModsConfig.IsActive("unlimitedhugs.hugslib")) return;
         LoadedModManager.GetMod<QuickstartMod>().OnLateInitialize();
     }
 }
