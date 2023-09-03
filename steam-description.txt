@@ -5,14 +5,14 @@ This mod is primarily for other modders. It expands on RimWorld's built-in "quic
 
 [img]https://raw.githubusercontent.com/CaptainArbitrary/HugsLibQuickstart/main/.github/README/Quickstart_Loading_Screen.png[/img]
 
-You also have the option of, instead of generating a new map at startup, instead loading into the save file of your choice, or just telling it to load the most recent save.
+You also have the option of, instead of generating a new map at startup, loading into the save file of your choice, or just telling it to load the most recent save.
 
 [img]https://raw.githubusercontent.com/CaptainArbitrary/HugsLibQuickstart/main/.github/README/Quickstart_Options_Dialog.png[/img]
 
 Quickstart was originally part of the venerable [url=https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib[/url] library. HugsLib, however, does a number of not-really-related things, and it hasn't been updated in quite a long time. So I decided to break out the Quickstart feature (which I use [i]excessively[/i] when I'm modding) into its own independent mod that could be installed by itself, without the need to load all of HugsLib into your game.
 
 [h1]Compatibility[/h1]
-This mod can coexist in your mod list alongside original-recipe Hugslib. This mod checks at initialization to see if Hugslib is active; if it is, this mod just doesn't do anything at all. So while you _can_ run both mods at the same time, there's no good reason to. If you're running Hugslib, you don't need this mod.
+This mod can coexist in your mod list alongside original-recipe Hugslib. This mod checks at initialization to see if Hugslib is active; if it is, this mod just doesn't do anything at all. So while you [i]can[/i] run both mods at the same time, there's no good reason to. If you're running Hugslib, you don't need this mod.
 
 HugsLib Quickstart goes great with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Publisher from HugsLib[/url].
 
@@ -20,3 +20,9 @@ HugsLib Quickstart goes great with [url=https://steamcommunity.com/sharedfiles/f
 Most of the code in this mod is lifted directly from the [url=https://github.com/UnlimitedHugs/RimworldHugsLib]HugsLib GitHub repository[/url], the contents of which were generously [url=https://github.com/UnlimitedHugs/RimworldHugsLib/blob/master/license.txt]put into the public domain[/url].
 
 Portions of the materials used to create this mod are trademarks and/or copyrighted works of Ludeon Studios Inc. All rights reserved by Ludeon. This content/mod is not official and is not endorsed by Ludeon.
+
+[url=https://github.com/CaptainArbitrary/HugsLibQuickstart/releases][img]https://img.shields.io/github/v/release/CaptainArbitrary/HugsLibQuickstart?style=for-the-badge&label=GitHub%20Release[/img][/url]
+[url=https://github.com/CaptainArbitrary/HugsLibQuickstart/issues][img]https://img.shields.io/github/issues/CaptainArbitrary/HugsLibQuickstart?style=for-the-badge[/img][/url]
+[url=https://github.com/CaptainArbitrary/HugsLibQuickstart/blob/main/LICENSE][img]https://img.shields.io/github/license/CaptainArbitrary/HugsLibQuickstart?style=for-the-badge[/img][/url]
+[url=https://discord.gg/4SrvKaQTB3][img]https://img.shields.io/badge/join_me_on-discord-blue?style=for-the-badge&logo=discord[/img][/url]
+[url=https://ko-fi.com/T6T1NNFAL][img]https://shields.io/badge/ko--fi-Buy_me_a_coffee-ff5f5f?logo=ko-fi&style=for-the-badge[/img][/url]
