@@ -40,7 +40,11 @@ You also have the option of, instead of generating a new map at startup, instead
 
 Quickstart was originally part of the venerable [HugsLib](https://steamcommunity.com/workshop/filedetails/?id=818773962) library. HugsLib, however, does a number of not-really-related things, and it hasn't been updated in quite a long time. So I decided to break out the Quickstart feature (which I use _excessively_ when I'm modding) into its own independent mod that could be installed by itself, without the need to load all of HugsLib into your game.
 
-**Note:** This mod goes great with [Log Publisher from HugsLib](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404).
+# Compatibility
+
+This mod can coexist in your mod list alongside original-recipe Hugslib. This mod checks at initialization to see if Hugslib is active; if it is, this mod just doesn't do anything at all. So while you _can_ run both mods at the same time, there's no good reason to. If you're running Hugslib, you don't need this mod.
+
+HugsLib Quickstart goes great with [Log Publisher from HugsLib](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404).
 
 # Acknowledgments
 
