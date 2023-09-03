@@ -19,8 +19,6 @@ internal class QuickstartStatusBox
         _pendingOperation = pendingOperation ?? throw new ArgumentNullException(nameof(pendingOperation));
     }
 
-    public static bool ShiftIsHeld => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-
     public event AbortHandler AbortRequested;
 
     public void OnGUI()
@@ -72,7 +70,7 @@ internal class QuickstartStatusBox
     {
         if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space)
         {
-            bool abortAndDisable = ShiftIsHeld;
+            bool abortAndDisable = EventUtility.ShiftIsHeld;
             Event.current.Use();
             AbortRequested?.Invoke(abortAndDisable);
         }

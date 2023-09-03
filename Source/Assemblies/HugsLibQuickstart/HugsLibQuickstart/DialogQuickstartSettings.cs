@@ -29,12 +29,12 @@ public class DialogQuickstartSettings : Window
     {
         base.PreOpen();
         CacheSavedGameFiles();
-        EnsureSettingsHaveValidFiles(Quickstart.Settings);
+        EnsureSettingsHaveValidFiles(QuickstartMod.Settings);
     }
 
     public override void PostClose()
     {
-        Quickstart.Instance.WriteSettings();
+        QuickstartMod.Instance.WriteSettings();
     }
 
     public override void DoWindowContents(Rect inRect)
@@ -48,9 +48,11 @@ public class DialogQuickstartSettings : Window
         const float subListingRowHeight = 30f;
         const float checkboxListingWidth = 280f;
         const float listingColumnSpacing = 17f;
-        QuickstartSettings settings = Quickstart.Settings;
-        Listing_Standard mainListing = new();
-        mainListing.verticalSpacing = mainListingSpacing;
+        QuickstartSettings settings = QuickstartMod.Settings;
+        Listing_Standard mainListing = new()
+        {
+            verticalSpacing = mainListingSpacing
+        };
         mainListing.Begin(inRect);
         Text.Font = GameFont.Medium;
         mainListing.Label("Quickstart settings");
@@ -124,13 +126,13 @@ public class DialogQuickstartSettings : Window
             if (settings.OperationMode != assignedMode)
             {
                 SoundDefOf.Click.PlayOneShotOnCamera();
-                Quickstart.Settings.OperationMode = assignedMode;
+                QuickstartMod.Settings.OperationMode = assignedMode;
             }
 
         Widgets.RadioButton(entryRect.x, entryRect.y, settings.OperationMode == assignedMode);
 
         Text.Font = GameFont.Medium;
-        string emphasizedLabel = string.Format("<size={0}>{1}</size>", fontSize, label);
+        string emphasizedLabel = $"<size={fontSize}>{label}</size>";
         Widgets.Label(labelRect, emphasizedLabel);
         Text.Font = GameFont.Small;
     }
@@ -159,8 +161,8 @@ public class DialogQuickstartSettings : Window
         if (Widgets.ButtonText(leftHalf, selectedSaveLabel)) ShowSaveFileSelectionFloatMenu();
         if (Widgets.ButtonText(rightHalf, "Load now"))
         {
-            if (QuickstartStatusBox.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.LoadMap;
-            Quickstart.Instance.InitiateSaveLoading();
+            if (EventUtility.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.LoadMap;
+            QuickstartMod.Instance.InitiateSaveLoading();
             Close();
         }
 
@@ -179,22 +181,9 @@ public class DialogQuickstartSettings : Window
 
     private IEnumerable<FloatMenuOption> GetSaveFileFloatMenuOptions(QuickstartSettings settings)
     {
-        const float versionLabelOffset = 10f;
         return _saveFiles.Select(s =>
         {
-            return new FloatMenuOption(s.Label, () => { settings.SaveFileToLoad = s.Name; },
-                MenuOptionPriority.Default, null, null, Text.CalcSize(s.VersionLabel).x + versionLabelOffset,
-                rect =>
-                {
-                    Color prevColor = GUI.color;
-                    GUI.color = s.FileInfo.VersionColor;
-                    Text.Anchor = TextAnchor.MiddleLeft;
-                    Widgets.Label(new Rect(rect.x + versionLabelOffset, rect.y, 200f, rect.height), s.VersionLabel);
-                    Text.Anchor = TextAnchor.UpperLeft;
-                    GUI.color = prevColor;
-                    return false;
-                }
-            );
+            return new FloatMenuOption(s.Label, () => { settings.SaveFileToLoad = s.Name; });
         });
     }
 
@@ -215,8 +204,8 @@ public class DialogQuickstartSettings : Window
 
         if (Widgets.ButtonText(rightHalf, "Generate now"))
         {
-            if (QuickstartStatusBox.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.GenerateMap;
-            Quickstart.Instance.InitiateMapGeneration();
+            if (EventUtility.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.GenerateMap;
+            QuickstartMod.Instance.InitiateMapGeneration();
             Close();
         }
 
@@ -225,7 +214,7 @@ public class DialogQuickstartSettings : Window
 
     private void MakeSelectMapSizeButton(Listing_Standard sub, QuickstartSettings settings)
     {
-        List<Quickstart.MapSizeEntry> allSizes = Quickstart.MapSizes;
+        List<QuickstartMod.MapSizeEntry> allSizes = QuickstartMod.MapSizes;
         string selected = allSizes.Select(s => s.Size == settings.MapSizeToGen ? s.Label : null).FirstOrDefault(s => s != null);
         if (sub.ButtonText(selected ?? "Select a map size"))
         {
@@ -252,7 +241,7 @@ public class DialogQuickstartSettings : Window
     {
         if (_saveFiles.Select(s => s.Name).All(s => s != settings.SaveFileToLoad)) settings.SaveFileToLoad = null;
         if (settings.ScenarioToGen != null && ScenarioLister.AllScenarios().All(s => s.name != settings.ScenarioToGen)) settings.ScenarioToGen = null;
-        if (settings.ScenarioToGen == null) settings.ScenarioToGen = ScenarioDefOf.Crashlanded.defName;
+        settings.ScenarioToGen ??= ScenarioDefOf.Crashlanded.defName;
     }
 
     private class FileEntry
@@ -260,14 +249,12 @@ public class DialogQuickstartSettings : Window
         public readonly SaveFileInfo FileInfo;
         public readonly string Label;
         public readonly string Name;
-        public readonly string VersionLabel;
 
         public FileEntry(FileInfo file)
         {
             FileInfo = new SaveFileInfo(file);
             Name = Path.GetFileNameWithoutExtension(FileInfo.FileInfo.Name);
             Label = Name;
-            VersionLabel = string.Format("({0})", FileInfo.GameVersion);
         }
     }
 }

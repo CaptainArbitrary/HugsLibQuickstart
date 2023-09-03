@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 using Verse.Profile;
 
 namespace HugsLibQuickstart;
 
-public class Quickstart : Mod
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+public class QuickstartMod : Mod
 {
     public static readonly List<MapSizeEntry> MapSizes = new();
     private bool _quickstartPending;
     private QuickstartStatusBox _statusBox;
 
-    public Quickstart(ModContentPack content) : base(content)
+    public QuickstartMod(ModContentPack content) : base(content)
     {
         Instance = this;
         Settings = GetSettings<QuickstartSettings>();
@@ -45,7 +48,7 @@ public class Quickstart : Mod
         }
     }
 
-    public static Quickstart Instance { get; private set; }
+    public static QuickstartMod Instance { get; private set; }
 
     public static QuickstartSettings Settings { get; private set; }
 
@@ -116,7 +119,11 @@ public class Quickstart : Mod
             string label = string.Format("{0}x{0}", size) + (desc != null ? $" ({desc})" : "");
             MapSizes.Add(new MapSizeEntry(size, label));
         }
-        // SnapSettingsMapSizeToClosestValue(Settings, MapSizes);
+        SnapSettingsMapSizeToClosestValue(Settings, MapSizes);
+    }
+
+    private static void SnapSettingsMapSizeToClosestValue(QuickstartSettings settings, List<MapSizeEntry> sizes) {
+        Settings.MapSizeToGen = sizes.OrderBy(e => Mathf.Abs(e.Size - settings.MapSizeToGen)).First().Size;
     }
 
     private void InitiateQuickstart()
@@ -142,7 +149,7 @@ public class Quickstart : Mod
 
     internal void InitiateMapGeneration()
     {
-        Log.Message("Quickstarter generating map with scenario: " + GetMapGenerationScenario().name);
+        Log.Message("Quickstart generating map with scenario: " + GetMapGenerationScenario().name);
         LongEventHandler.QueueLongEvent(() =>
         {
             MemoryUtility.ClearAllMapsAndWorld();
@@ -154,8 +161,7 @@ public class Quickstart : Mod
 
     private Scenario GetMapGenerationScenario()
     {
-        // return TryGetScenarioByName(_settings.ScenarioToGen) ?? ScenarioDefOf.Crashlanded.scenario;
-        return ScenarioDefOf.Crashlanded.scenario;
+        return ScenarioLister.AllScenarios().FirstOrDefault(s => s.name == Settings.ScenarioToGen) ?? ScenarioDefOf.Crashlanded.scenario;
     }
 
     private void ApplyQuickstartConfiguration()
@@ -182,7 +188,7 @@ public class Quickstart : Mod
         string saveName = GetSaveNameToLoad() ?? throw new WarningException("save filename not set");
         string filePath = GenFilePaths.FilePathForSavedGame(saveName);
         if (!File.Exists(filePath)) throw new WarningException("save file not found: " + saveName);
-        Log.Message("Quickstarter is loading saved game: " + saveName);
+        Log.Message("Quickstart is loading saved game: " + saveName);
 
         void LoadAction()
         {
@@ -203,7 +209,7 @@ public class Quickstart : Mod
         if (widgets.ButtonIcon(Textures.QuickstartIcon, quickstartButtonTooltip))
         {
             WindowStack stack = Find.WindowStack;
-            if (QuickstartStatusBox.ShiftIsHeld)
+            if (EventUtility.ShiftIsHeld)
             {
                 stack.TryRemove(typeof(DialogQuickstartSettings));
                 Instance.InitiateMapGeneration();

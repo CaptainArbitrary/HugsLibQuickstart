@@ -37,7 +37,7 @@ internal class DebugWindowsOpenerPatch
                 yield return new CodeInstruction(OpCodes.Ldarg_0);
                 yield return new CodeInstruction(OpCodes.Ldfld, widgetRowField);
                 yield return new CodeInstruction(OpCodes.Call,
-                    ((Action<WidgetRow>)Quickstart.DrawDebugToolbarButton).Method);
+                    ((Action<WidgetRow>)QuickstartMod.DrawDebugToolbarButton).Method);
                 _patched = true;
             }
 
