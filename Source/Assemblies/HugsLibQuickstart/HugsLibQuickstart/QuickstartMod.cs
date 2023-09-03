@@ -154,8 +154,7 @@ public class QuickstartMod : Mod
 
     private Scenario GetMapGenerationScenario()
     {
-        // return TryGetScenarioByName(_settings.ScenarioToGen) ?? ScenarioDefOf.Crashlanded.scenario;
-        return ScenarioDefOf.Crashlanded.scenario;
+        return ScenarioLister.AllScenarios().FirstOrDefault(s => s.name == Settings.ScenarioToGen) ?? ScenarioDefOf.Crashlanded.scenario;
     }
 
     private void ApplyQuickstartConfiguration()
