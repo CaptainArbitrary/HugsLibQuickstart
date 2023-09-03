@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -13,18 +14,19 @@ namespace HugsLibQuickstart;
 
 public class Quickstart : Mod
 {
+    public static readonly List<MapSizeEntry> MapSizes = new();
     private bool _quickstartPending;
-    private QuickstartSettings _settings;
     private QuickstartStatusBox _statusBox;
 
     public Quickstart(ModContentPack content) : base(content)
     {
-        if (Settings.OperationMode == QuickstartSettings.QuickstartMode.Disabled) return;
-
-        Log.Message($"Settings.OperationMode = {Settings.OperationMode}");
+        Instance = this;
+        Settings = GetSettings<QuickstartSettings>();
 
         Harmony harmony = new(content.PackageId);
         harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+        if (Settings.OperationMode == QuickstartSettings.QuickstartMode.Disabled || !Prefs.DevMode) return;
 
         _quickstartPending = true;
         _statusBox = new QuickstartStatusBox(GetStatusBoxOperation(Settings));
@@ -43,10 +45,9 @@ public class Quickstart : Mod
         }
     }
 
-    public QuickstartSettings Settings
-    {
-        get { return _settings ??= GetSettings<QuickstartSettings>(); }
-    }
+    public static Quickstart Instance { get; private set; }
+
+    public static QuickstartSettings Settings { get; private set; }
 
     private string GetSaveNameToLoad()
     {
@@ -78,9 +79,44 @@ public class Quickstart : Mod
 
     internal void OnLateInitialize()
     {
-        // RetrofitSettingWithLabel();
-        // EnumerateMapSizes();
+        EnumerateMapSizes();
         if (Prefs.DevMode) LongEventHandler.QueueLongEvent(InitiateQuickstart, null, false, null);
+    }
+
+    private static void EnumerateMapSizes()
+    {
+        int[] vanillaSizes = Traverse.Create<Dialog_AdvancedGameConfig>().Field("MapSizes").GetValue<int[]>();
+        if (vanillaSizes == null)
+        {
+            Log.Error("Could not reflect required field: Dialog_AdvancedGameConfig.MapSizes");
+            return;
+        }
+
+        MapSizes.Clear();
+        MapSizes.Add(new MapSizeEntry(75, "75x75 (Encounter)"));
+        foreach (int size in vanillaSizes)
+        {
+            string desc = null;
+            switch (size)
+            {
+                case 200:
+                    desc = "MapSizeSmall".Translate();
+                    break;
+                case 250:
+                    desc = "MapSizeMedium".Translate();
+                    break;
+                case 300:
+                    desc = "MapSizeLarge".Translate();
+                    break;
+                case 350:
+                    desc = "MapSizeExtreme".Translate();
+                    break;
+            }
+
+            string label = string.Format("{0}x{0}", size) + (desc != null ? $" ({desc})" : "");
+            MapSizes.Add(new MapSizeEntry(size, label));
+        }
+        // SnapSettingsMapSizeToClosestValue(Settings, MapSizes);
     }
 
     private void InitiateQuickstart()
@@ -104,7 +140,7 @@ public class Quickstart : Mod
         if (Settings.StopOnWarnings && Log.Messages.Any(m => m.type == LogMessageType.Warning)) throw new WarningException("warnings detected in log");
     }
 
-    private void InitiateMapGeneration()
+    internal void InitiateMapGeneration()
     {
         Log.Message("Quickstarter generating map with scenario: " + GetMapGenerationScenario().name);
         LongEventHandler.QueueLongEvent(() =>
@@ -118,7 +154,7 @@ public class Quickstart : Mod
 
     private Scenario GetMapGenerationScenario()
     {
-        // return TryGetScenarioByName(Settings.ScenarioToGen) ?? ScenarioDefOf.Crashlanded.scenario;
+        // return TryGetScenarioByName(_settings.ScenarioToGen) ?? ScenarioDefOf.Crashlanded.scenario;
         return ScenarioDefOf.Crashlanded.scenario;
     }
 
@@ -141,7 +177,7 @@ public class Quickstart : Mod
         Find.Scenario.PreMapGenerate();
     }
 
-    private void InitiateSaveLoading()
+    internal void InitiateSaveLoading()
     {
         string saveName = GetSaveNameToLoad() ?? throw new WarningException("save filename not set");
         string filePath = GenFilePaths.FilePathForSavedGame(saveName);
@@ -157,5 +193,40 @@ public class Quickstart : Mod
             LoadAction();
         else
             PreLoadUtility.CheckVersionAndLoad(filePath, ScribeMetaHeaderUtility.ScribeHeaderMode.Map, LoadAction);
+    }
+
+    internal static void DrawDebugToolbarButton(WidgetRow widgets)
+    {
+        const string quickstartButtonTooltip = "Open the quickstart settings.\n\n"
+                                               + "This lets you automatically generate a map or load an existing save when the game is started.\n"
+                                               + "Shift-click to quick-generate a new map.";
+        if (widgets.ButtonIcon(Textures.QuickstartIcon, quickstartButtonTooltip))
+        {
+            WindowStack stack = Find.WindowStack;
+            if (QuickstartStatusBox.ShiftIsHeld)
+            {
+                stack.TryRemove(typeof(DialogQuickstartSettings));
+                Instance.InitiateMapGeneration();
+            }
+            else
+            {
+                if (stack.IsOpen<DialogQuickstartSettings>())
+                    stack.TryRemove(typeof(DialogQuickstartSettings));
+                else
+                    stack.Add(new DialogQuickstartSettings());
+            }
+        }
+    }
+
+    public class MapSizeEntry
+    {
+        public readonly string Label;
+        public readonly int Size;
+
+        public MapSizeEntry(int size, string label)
+        {
+            Size = size;
+            Label = label;
+        }
     }
 }

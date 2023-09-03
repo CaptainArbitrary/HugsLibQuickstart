@@ -16,7 +16,7 @@ internal class QuickstartStatusBox
 
     public QuickstartStatusBox(IOperationMessageProvider pendingOperation)
     {
-        this._pendingOperation = pendingOperation ?? throw new ArgumentNullException(nameof(pendingOperation));
+        _pendingOperation = pendingOperation ?? throw new ArgumentNullException(nameof(pendingOperation));
     }
 
     public static bool ShiftIsHeld => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -33,7 +33,7 @@ internal class QuickstartStatusBox
 
     private string GetStatusBoxText()
     {
-        StringBuilder sb = new StringBuilder("HugsLib quickstarter preparing to\n");
+        StringBuilder sb = new("Quickstart is preparing to\n");
         sb.Append(_pendingOperation.Message);
         sb.AppendLine();
         sb.AppendLine();
@@ -49,7 +49,7 @@ internal class QuickstartStatusBox
         Vector2 statusTextSize = Text.CalcSize(statusText);
         float boxWidth = Mathf.Max(StatusRectSize.x, statusTextSize.x + StatusRectPadding.x * 2f);
         float boxHeight = Mathf.Max(StatusRectSize.y, statusTextSize.y + StatusRectPadding.y * 2f);
-        Rect boxRect = new Rect(
+        Rect boxRect = new(
             (UI.screenWidth - boxWidth) / 2f,
             (UI.screenHeight / 2f - boxHeight) / 2f,
             boxWidth, boxHeight
@@ -89,7 +89,7 @@ internal class QuickstartStatusBox
 
         public LoadSaveOperation(string fileName)
         {
-            this._fileName = fileName;
+            _fileName = fileName;
         }
 
         public string Message => $"load save file: {_fileName}";
@@ -102,8 +102,8 @@ internal class QuickstartStatusBox
 
         public GenerateMapOperation(string scenario, int mapSize)
         {
-            this._scenario = scenario;
-            this._mapSize = mapSize;
+            _scenario = scenario;
+            _mapSize = mapSize;
         }
 
         public string Message => $"generate map: {_scenario} ({_mapSize}x{_mapSize})";

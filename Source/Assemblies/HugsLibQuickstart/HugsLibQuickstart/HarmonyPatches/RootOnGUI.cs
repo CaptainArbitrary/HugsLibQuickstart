@@ -4,7 +4,7 @@ using Verse;
 namespace HugsLibQuickstart.HarmonyPatches;
 
 [HarmonyPatch(typeof(Root), nameof(Root.OnGUI))]
-public class Root_OnGUI
+public class RootOnGUI
 {
     public static void Postfix()
     {

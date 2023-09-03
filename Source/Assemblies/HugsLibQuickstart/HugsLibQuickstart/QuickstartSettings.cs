@@ -1,5 +1,4 @@
-﻿using System;
-using Verse;
+﻿using Verse;
 
 namespace HugsLibQuickstart;
 
@@ -12,9 +11,9 @@ public class QuickstartSettings : ModSettings
         GenerateMap = 2
     }
 
+    private const int DefaultMapSize = 250;
     public bool BypassSafetyDialog;
-    public int MapSizeToGen = 250;
-
+    public int MapSizeToGen = DefaultMapSize;
     public QuickstartMode OperationMode = QuickstartMode.Disabled;
     public string SaveFileToLoad;
     public string ScenarioToGen;
@@ -24,11 +23,12 @@ public class QuickstartSettings : ModSettings
     public override void ExposeData()
     {
         Scribe_Values.Look(ref OperationMode, "OperationMode");
-        Scribe_Values.Look(ref SaveFileToLoad, "SaveFileToLoad", String.Empty);
+        Scribe_Values.Look(ref SaveFileToLoad, "SaveFileToLoad", string.Empty);
         Scribe_Values.Look(ref ScenarioToGen, "ScenarioToGen");
         Scribe_Values.Look(ref StopOnErrors, "StopOnErrors");
         Scribe_Values.Look(ref StopOnWarnings, "StopOnWarnings");
         Scribe_Values.Look(ref BypassSafetyDialog, "BypassSafetyDialog");
+        Scribe_Values.Look(ref MapSizeToGen, "MapSizeToGen");
 
         base.ExposeData();
     }
