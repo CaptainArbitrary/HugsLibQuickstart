@@ -241,7 +241,7 @@ public class DialogQuickstartSettings : Window
     {
         if (_saveFiles.Select(s => s.Name).All(s => s != settings.SaveFileToLoad)) settings.SaveFileToLoad = null;
         if (settings.ScenarioToGen != null && ScenarioLister.AllScenarios().All(s => s.name != settings.ScenarioToGen)) settings.ScenarioToGen = null;
-        if (settings.ScenarioToGen == null) settings.ScenarioToGen = ScenarioDefOf.Crashlanded.defName;
+        settings.ScenarioToGen ??= ScenarioDefOf.Crashlanded.defName;
     }
 
     private class FileEntry
