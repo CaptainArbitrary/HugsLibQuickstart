@@ -142,7 +142,7 @@ public class QuickstartMod : Mod
 
     internal void InitiateMapGeneration()
     {
-        Log.Message("Quickstarter generating map with scenario: " + GetMapGenerationScenario().name);
+        Log.Message("Quickstart generating map with scenario: " + GetMapGenerationScenario().name);
         LongEventHandler.QueueLongEvent(() =>
         {
             MemoryUtility.ClearAllMapsAndWorld();
@@ -182,7 +182,7 @@ public class QuickstartMod : Mod
         string saveName = GetSaveNameToLoad() ?? throw new WarningException("save filename not set");
         string filePath = GenFilePaths.FilePathForSavedGame(saveName);
         if (!File.Exists(filePath)) throw new WarningException("save file not found: " + saveName);
-        Log.Message("Quickstarter is loading saved game: " + saveName);
+        Log.Message("Quickstart is loading saved game: " + saveName);
 
         void LoadAction()
         {
