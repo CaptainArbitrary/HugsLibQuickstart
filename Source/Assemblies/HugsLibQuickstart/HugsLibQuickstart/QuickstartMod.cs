@@ -26,6 +26,8 @@ public class QuickstartMod : Mod
         Instance = this;
         Settings = GetSettings<QuickstartSettings>();
 
+        if (ModsConfig.IsActive("unlimitedhugs.hugslib")) return;
+
         Harmony harmony = new(content.PackageId);
         harmony.PatchAll(Assembly.GetExecutingAssembly());
 
