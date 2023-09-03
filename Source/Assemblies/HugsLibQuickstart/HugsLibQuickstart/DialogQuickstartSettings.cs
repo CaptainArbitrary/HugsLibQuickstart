@@ -132,7 +132,7 @@ public class DialogQuickstartSettings : Window
         Widgets.RadioButton(entryRect.x, entryRect.y, settings.OperationMode == assignedMode);
 
         Text.Font = GameFont.Medium;
-        string emphasizedLabel = string.Format("<size={0}>{1}</size>", fontSize, label);
+        string emphasizedLabel = $"<size={fontSize}>{label}</size>";
         Widgets.Label(labelRect, emphasizedLabel);
         Text.Font = GameFont.Small;
     }
