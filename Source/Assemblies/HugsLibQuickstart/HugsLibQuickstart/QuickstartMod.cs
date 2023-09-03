@@ -12,13 +12,13 @@ using Verse.Profile;
 
 namespace HugsLibQuickstart;
 
-public class Quickstart : Mod
+public class QuickstartMod : Mod
 {
     public static readonly List<MapSizeEntry> MapSizes = new();
     private bool _quickstartPending;
     private QuickstartStatusBox _statusBox;
 
-    public Quickstart(ModContentPack content) : base(content)
+    public QuickstartMod(ModContentPack content) : base(content)
     {
         Instance = this;
         Settings = GetSettings<QuickstartSettings>();
@@ -45,7 +45,7 @@ public class Quickstart : Mod
         }
     }
 
-    public static Quickstart Instance { get; private set; }
+    public static QuickstartMod Instance { get; private set; }
 
     public static QuickstartSettings Settings { get; private set; }
 

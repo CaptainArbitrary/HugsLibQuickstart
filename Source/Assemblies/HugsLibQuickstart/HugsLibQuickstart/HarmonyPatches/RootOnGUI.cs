@@ -8,7 +8,7 @@ public class RootOnGUI
 {
     public static void Postfix()
     {
-        Quickstart mod = LoadedModManager.GetMod<Quickstart>();
+        QuickstartMod mod = LoadedModManager.GetMod<QuickstartMod>();
         mod.OnGUIUnfiltered();
     }
 }

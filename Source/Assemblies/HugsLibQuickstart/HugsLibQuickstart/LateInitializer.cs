@@ -7,6 +7,6 @@ public class LateInitializer
 {
     static LateInitializer()
     {
-        LoadedModManager.GetMod<Quickstart>().OnLateInitialize();
+        LoadedModManager.GetMod<QuickstartMod>().OnLateInitialize();
     }
 }

@@ -29,12 +29,12 @@ public class DialogQuickstartSettings : Window
     {
         base.PreOpen();
         CacheSavedGameFiles();
-        EnsureSettingsHaveValidFiles(Quickstart.Settings);
+        EnsureSettingsHaveValidFiles(QuickstartMod.Settings);
     }
 
     public override void PostClose()
     {
-        Quickstart.Instance.WriteSettings();
+        QuickstartMod.Instance.WriteSettings();
     }
 
     public override void DoWindowContents(Rect inRect)
@@ -48,7 +48,7 @@ public class DialogQuickstartSettings : Window
         const float subListingRowHeight = 30f;
         const float checkboxListingWidth = 280f;
         const float listingColumnSpacing = 17f;
-        QuickstartSettings settings = Quickstart.Settings;
+        QuickstartSettings settings = QuickstartMod.Settings;
         Listing_Standard mainListing = new();
         mainListing.verticalSpacing = mainListingSpacing;
         mainListing.Begin(inRect);
@@ -124,7 +124,7 @@ public class DialogQuickstartSettings : Window
             if (settings.OperationMode != assignedMode)
             {
                 SoundDefOf.Click.PlayOneShotOnCamera();
-                Quickstart.Settings.OperationMode = assignedMode;
+                QuickstartMod.Settings.OperationMode = assignedMode;
             }
 
         Widgets.RadioButton(entryRect.x, entryRect.y, settings.OperationMode == assignedMode);
@@ -160,7 +160,7 @@ public class DialogQuickstartSettings : Window
         if (Widgets.ButtonText(rightHalf, "Load now"))
         {
             if (EventUtility.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.LoadMap;
-            Quickstart.Instance.InitiateSaveLoading();
+            QuickstartMod.Instance.InitiateSaveLoading();
             Close();
         }
 
@@ -216,7 +216,7 @@ public class DialogQuickstartSettings : Window
         if (Widgets.ButtonText(rightHalf, "Generate now"))
         {
             if (EventUtility.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.GenerateMap;
-            Quickstart.Instance.InitiateMapGeneration();
+            QuickstartMod.Instance.InitiateMapGeneration();
             Close();
         }
 
@@ -225,7 +225,7 @@ public class DialogQuickstartSettings : Window
 
     private void MakeSelectMapSizeButton(Listing_Standard sub, QuickstartSettings settings)
     {
-        List<Quickstart.MapSizeEntry> allSizes = Quickstart.MapSizes;
+        List<QuickstartMod.MapSizeEntry> allSizes = QuickstartMod.MapSizes;
         string selected = allSizes.Select(s => s.Size == settings.MapSizeToGen ? s.Label : null).FirstOrDefault(s => s != null);
         if (sub.ButtonText(selected ?? "Select a map size"))
         {
