@@ -7,6 +7,7 @@ using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 using Verse.Profile;
 
@@ -116,7 +117,11 @@ public class QuickstartMod : Mod
             string label = string.Format("{0}x{0}", size) + (desc != null ? $" ({desc})" : "");
             MapSizes.Add(new MapSizeEntry(size, label));
         }
-        // SnapSettingsMapSizeToClosestValue(Settings, MapSizes);
+        SnapSettingsMapSizeToClosestValue(Settings, MapSizes);
+    }
+
+    private static void SnapSettingsMapSizeToClosestValue(QuickstartSettings settings, List<MapSizeEntry> sizes) {
+        Settings.MapSizeToGen = sizes.OrderBy(e => Mathf.Abs(e.Size - settings.MapSizeToGen)).First().Size;
     }
 
     private void InitiateQuickstart()
