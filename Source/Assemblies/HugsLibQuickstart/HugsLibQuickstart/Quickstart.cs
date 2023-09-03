@@ -203,7 +203,7 @@ public class Quickstart : Mod
         if (widgets.ButtonIcon(Textures.QuickstartIcon, quickstartButtonTooltip))
         {
             WindowStack stack = Find.WindowStack;
-            if (QuickstartStatusBox.ShiftIsHeld)
+            if (EventUtility.ShiftIsHeld)
             {
                 stack.TryRemove(typeof(DialogQuickstartSettings));
                 Instance.InitiateMapGeneration();

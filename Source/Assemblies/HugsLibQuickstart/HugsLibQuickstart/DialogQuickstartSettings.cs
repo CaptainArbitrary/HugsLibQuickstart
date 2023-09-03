@@ -159,7 +159,7 @@ public class DialogQuickstartSettings : Window
         if (Widgets.ButtonText(leftHalf, selectedSaveLabel)) ShowSaveFileSelectionFloatMenu();
         if (Widgets.ButtonText(rightHalf, "Load now"))
         {
-            if (QuickstartStatusBox.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.LoadMap;
+            if (EventUtility.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.LoadMap;
             Quickstart.Instance.InitiateSaveLoading();
             Close();
         }
@@ -215,7 +215,7 @@ public class DialogQuickstartSettings : Window
 
         if (Widgets.ButtonText(rightHalf, "Generate now"))
         {
-            if (QuickstartStatusBox.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.GenerateMap;
+            if (EventUtility.ShiftIsHeld) settings.OperationMode = QuickstartSettings.QuickstartMode.GenerateMap;
             Quickstart.Instance.InitiateMapGeneration();
             Close();
         }
