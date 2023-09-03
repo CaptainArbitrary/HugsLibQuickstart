@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,6 +14,7 @@ using Verse.Profile;
 
 namespace HugsLibQuickstart;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class QuickstartMod : Mod
 {
     public static readonly List<MapSizeEntry> MapSizes = new();
