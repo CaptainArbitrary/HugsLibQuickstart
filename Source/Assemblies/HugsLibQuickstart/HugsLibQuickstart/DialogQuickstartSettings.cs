@@ -181,22 +181,9 @@ public class DialogQuickstartSettings : Window
 
     private IEnumerable<FloatMenuOption> GetSaveFileFloatMenuOptions(QuickstartSettings settings)
     {
-        const float versionLabelOffset = 10f;
         return _saveFiles.Select(s =>
         {
-            return new FloatMenuOption(s.Label, () => { settings.SaveFileToLoad = s.Name; },
-                MenuOptionPriority.Default, null, null, Text.CalcSize(s.VersionLabel).x + versionLabelOffset,
-                rect =>
-                {
-                    Color prevColor = GUI.color;
-                    GUI.color = s.FileInfo.VersionColor;
-                    Text.Anchor = TextAnchor.MiddleLeft;
-                    Widgets.Label(new Rect(rect.x + versionLabelOffset, rect.y, 200f, rect.height), s.VersionLabel);
-                    Text.Anchor = TextAnchor.UpperLeft;
-                    GUI.color = prevColor;
-                    return false;
-                }
-            );
+            return new FloatMenuOption(s.Label, () => { settings.SaveFileToLoad = s.Name; });
         });
     }
 
@@ -262,14 +249,12 @@ public class DialogQuickstartSettings : Window
         public readonly SaveFileInfo FileInfo;
         public readonly string Label;
         public readonly string Name;
-        public readonly string VersionLabel;
 
         public FileEntry(FileInfo file)
         {
             FileInfo = new SaveFileInfo(file);
             Name = Path.GetFileNameWithoutExtension(FileInfo.FileInfo.Name);
             Label = Name;
-            VersionLabel = string.Format("({0})", FileInfo.GameVersion);
         }
     }
 }
