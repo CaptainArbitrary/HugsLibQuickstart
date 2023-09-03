@@ -1,0 +1,22 @@
+[i]Quickstarter: Load a save file or generate a new map with a given scenario and size right after the game is started. Also allows to generate a new map with one click. Settings dialog included.[/i] — [url=https://github.com/UnlimitedHugs/RimworldHugsLib]Unlimited Hugs[/url]
+
+[h1]Description[/h1]
+This mod is primarily for other modders. It expands on RimWorld's built-in "quicktest" feature by allowing you to boot the game directly into a map of your chosen size using the scenario of your choice.
+
+[img]https://raw.githubusercontent.com/CaptainArbitrary/HugsLibQuickstart/main/.github/README/Quickstart_Loading_Screen.png[/img]
+
+You also have the option of, instead of generating a new map at startup, instead loading into the save file of your choice, or just telling it to load the most recent save.
+
+[img]https://raw.githubusercontent.com/CaptainArbitrary/HugsLibQuickstart/main/.github/README/Quickstart_Options_Dialog.png[/img]
+
+Quickstart was originally part of the venerable [url=https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib[/url] library. HugsLib, however, does a number of not-really-related things, and it hasn't been updated in quite a long time. So I decided to break out the Quickstart feature (which I use [i]excessively[/i] when I'm modding) into its own independent mod that could be installed by itself, without the need to load all of HugsLib into your game.
+
+[h1]Compatibility[/h1]
+This mod can coexist in your mod list alongside original-recipe Hugslib. This mod checks at initialization to see if Hugslib is active; if it is, this mod just doesn't do anything at all. So while you _can_ run both mods at the same time, there's no good reason to. If you're running Hugslib, you don't need this mod.
+
+HugsLib Quickstart goes great with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Publisher from HugsLib[/url].
+
+[h1]Acknowledgments[/h1]
+Most of the code in this mod is lifted directly from the [url=https://github.com/UnlimitedHugs/RimworldHugsLib]HugsLib GitHub repository[/url], the contents of which were generously [url=https://github.com/UnlimitedHugs/RimworldHugsLib/blob/master/license.txt]put into the public domain[/url].
+
+Portions of the materials used to create this mod are trademarks and/or copyrighted works of Ludeon Studios Inc. All rights reserved by Ludeon. This content/mod is not official and is not endorsed by Ludeon.
