@@ -49,8 +49,10 @@ public class DialogQuickstartSettings : Window
         const float checkboxListingWidth = 280f;
         const float listingColumnSpacing = 17f;
         QuickstartSettings settings = QuickstartMod.Settings;
-        Listing_Standard mainListing = new();
-        mainListing.verticalSpacing = mainListingSpacing;
+        Listing_Standard mainListing = new()
+        {
+            verticalSpacing = mainListingSpacing
+        };
         mainListing.Begin(inRect);
         Text.Font = GameFont.Medium;
         mainListing.Label("Quickstart settings");
